@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 const Post = props => {
-  const [id, setId] = useState(null);
   const [post, setPost] = useState(null);
 
   useEffect(() => {
@@ -11,8 +10,7 @@ const Post = props => {
       .get(`https://jsonplaceholder.typicode.com/posts/${id}`)
       .then(response => setPost(response.data))
       .catch(err => console.error(err));
-    setId(props.match.params.post_id);
-  }, []);
+  }, [props]);
 
   return (
     <div className="container">
