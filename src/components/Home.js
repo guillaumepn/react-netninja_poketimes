@@ -1,24 +1,15 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React from "react";
 import { Link } from "react-router-dom";
 
 import Pokeball from "../pokeball.png";
+import { connect } from "react-redux";
 
-const Home = () => {
-  const [posts, setPosts] = useState([]);
-
-  useEffect(() => {
-    axios
-      .get("https://jsonplaceholder.typicode.com/posts")
-      .then(response => {
-        setPosts(response.data);
-      })
-      .catch(err => console.error(err));
-  }, []);
+const Home = props => {
+  console.log(props);
 
   const postList =
-    posts.length > 0 ? (
-      posts.map(post => (
+    props.posts.length > 0 ? (
+      props.posts.map(post => (
         <div className="post card" key={post.id}>
           <img src={Pokeball} alt="Pokéball" />
           <div className="card-content">
@@ -40,4 +31,10 @@ const Home = () => {
   );
 };
 
-export default Home;
+const mapStateToProps = state => {
+  return {
+    posts: state.posts
+  };
+};
+
+export default connect(mapStateToProps)(Home);

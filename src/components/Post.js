@@ -1,23 +1,13 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React from "react";
+import { connect } from "react-redux";
 
 const Post = props => {
-  const [post, setPost] = useState(null);
-
-  useEffect(() => {
-    const id = props.match.params.post_id;
-    axios
-      .get(`https://jsonplaceholder.typicode.com/posts/${id}`)
-      .then(response => setPost(response.data))
-      .catch(err => console.error(err));
-  }, [props]);
-
   return (
     <div className="container">
-      {post ? (
+      {props.post ? (
         <div className="post">
-          <h4>{post.title}</h4>
-          <p>{post.body}</p>
+          <h4>{props.post.title}</h4>
+          <p>{props.post.body}</p>
         </div>
       ) : (
         <div className="center">Loading...</div>
@@ -26,4 +16,11 @@ const Post = props => {
   );
 };
 
-export default Post;
+const mapStateToProps = (state, ownProps) => {
+  let id = ownProps.match.params.post_id;
+  return {
+    post: state.posts.find(post => post.id === id)
+  };
+};
+
+export default connect(mapStateToProps)(Post);
